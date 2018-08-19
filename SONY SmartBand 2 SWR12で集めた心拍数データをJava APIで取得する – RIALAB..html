@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+		<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="profile" href="http://gmpg.org/xfn/11">
+	<link rel="pingback" href="http://www.ria-lab.com/wp/xmlrpc.php">
+
+		<title>SONY SmartBand 2 SWR12で集めた心拍数データをJava APIで取得する &#8211; RIALAB.</title>
+<link rel='dns-prefetch' href='//platform.twitter.com' />
+<link rel='dns-prefetch' href='//fonts.googleapis.com' />
+<link rel='dns-prefetch' href='//s.w.org' />
+<link rel="alternate" type="application/rss+xml" title="RIALAB. &raquo; フィード" href="http://www.ria-lab.com/feed" />
+<link rel="alternate" type="application/rss+xml" title="RIALAB. &raquo; コメントフィード" href="http://www.ria-lab.com/comments/feed" />
+<link rel="alternate" type="application/rss+xml" title="RIALAB. &raquo; SONY SmartBand 2 SWR12で集めた心拍数データをJava APIで取得する のコメントのフィード" href="http://www.ria-lab.com/archives/890/feed" />
+		<script type="text/javascript">
+			window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/11\/svg\/","svgExt":".svg","source":{"concatemoji":"http:\/\/www.ria-lab.com\/wp\/wp-includes\/js\/wp-emoji-release.min.js?ver=4.9.8"}};
+			!function(a,b,c){function d(a,b){var c=String.fromCharCode;l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,a),0,0);var d=k.toDataURL();l.clearRect(0,0,k.width,k.height),l.fillText(c.apply(this,b),0,0);var e=k.toDataURL();return d===e}function e(a){var b;if(!l||!l.fillText)return!1;switch(l.textBaseline="top",l.font="600 32px Arial",a){case"flag":return!(b=d([55356,56826,55356,56819],[55356,56826,8203,55356,56819]))&&(b=d([55356,57332,56128,56423,56128,56418,56128,56421,56128,56430,56128,56423,56128,56447],[55356,57332,8203,56128,56423,8203,56128,56418,8203,56128,56421,8203,56128,56430,8203,56128,56423,8203,56128,56447]),!b);case"emoji":return b=d([55358,56760,9792,65039],[55358,56760,8203,9792,65039]),!b}return!1}function f(a){var c=b.createElement("script");c.src=a,c.defer=c.type="text/javascript",b.getElementsByTagName("head")[0].appendChild(c)}var g,h,i,j,k=b.createElement("canvas"),l=k.getContext&&k.getContext("2d");for(j=Array("flag","emoji"),c.supports={everything:!0,everythingExceptFlag:!0},i=0;i<j.length;i++)c.supports[j[i]]=e(j[i]),c.supports.everything=c.supports.everything&&c.supports[j[i]],"flag"!==j[i]&&(c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&c.supports[j[i]]);c.supports.everythingExceptFlag=c.supports.everythingExceptFlag&&!c.supports.flag,c.DOMReady=!1,c.readyCallback=function(){c.DOMReady=!0},c.supports.everything||(h=function(){c.readyCallback()},b.addEventListener?(b.addEventListener("DOMContentLoaded",h,!1),a.addEventListener("load",h,!1)):(a.attachEvent("onload",h),b.attachEvent("onreadystatechange",function(){"complete"===b.readyState&&c.readyCallback()})),g=c.source||{},g.concatemoji?f(g.concatemoji):g.wpemoji&&g.twemoji&&(f(g.twemoji),f(g.wpemoji)))}(window,document,window._wpemojiSettings);
+		</script>
+		<style type="text/css">
+img.wp-smiley,
+img.emoji {
+	display: inline !important;
+	border: none !important;
+	box-shadow: none !important;
+	height: 1em !important;
+	width: 1em !important;
+	margin: 0 .07em !important;
+	vertical-align: -0.1em !important;
+	background: none !important;
+	padding: 0 !important;
+}
+</style>
+<link rel='stylesheet' id='contact-form-7-css'  href='http://www.ria-lab.com/wp/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.3' type='text/css' media='all' />
+<link rel='stylesheet' id='bootstrap-css-css'  href='http://www.ria-lab.com/wp/wp-content/themes/zillah/css/bootstrap.min.css?ver=v3.3.6' type='text/css' media='all' />
+<link rel='stylesheet' id='zillah-style-css'  href='http://www.ria-lab.com/wp/wp-content/themes/zillah/style.css?ver=4.9.8' type='text/css' media='all' />
+<style id='zillah-style-inline-css' type='text/css'>
+
+				.header-inner-site-branding {
+						background-image: url(http://www.ria-lab.com/wp/wp-content/uploads/2018/06/cropped-cropped-eb50698bfde81d02629bbd02850abecc-2.jpg);
+				}
+</style>
+<link rel='stylesheet' id='zillah-fonts-css'  href='//fonts.googleapis.com/css?family=Merriweather%3A400%2C300%7CCabin%3A400%2C500%2C600%2C700%7CLato%3A400%2C900%2C700&#038;subset=latin%2Clatin-ext' type='text/css' media='all' />
+<link rel='stylesheet' id='font-awesome-css'  href='http://www.ria-lab.com/wp/wp-content/themes/zillah/css/font-awesome.min.css?ver=v4.5.0' type='text/css' media='' />
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-includes/js/jquery/jquery.js?ver=1.12.4'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-includes/js/jquery/jquery-migrate.min.js?ver=1.4.1'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var pf = {"spam":{"label":"I'm human!","value":"64d36ce971"}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/pirate-forms/public/js/custom-spam.js?ver=4.9.8'></script>
+<script type='text/javascript' src='http://platform.twitter.com/anywhere.js?id=2qZgAMQzemPs2vPKxvwzQ&#038;v=1'></script>
+<link rel='https://api.w.org/' href='http://www.ria-lab.com/wp-json/' />
+<link rel="EditURI" type="application/rsd+xml" title="RSD" href="http://www.ria-lab.com/wp/xmlrpc.php?rsd" />
+<link rel="wlwmanifest" type="application/wlwmanifest+xml" href="http://www.ria-lab.com/wp/wp-includes/wlwmanifest.xml" /> 
+<link rel='prev' title='Excelのアクティブプリンタをプログラムで設定する方法' href='http://www.ria-lab.com/archives/877' />
+<link rel='next' title='ヤマト運輸 送り状発行ソフトB2 (Ver. 6)をWindows 10にインストールする方法' href='http://www.ria-lab.com/archives/909' />
+<meta name="generator" content="WordPress 4.9.8" />
+<link rel="canonical" href="http://www.ria-lab.com/archives/890" />
+<link rel='shortlink' href='http://www.ria-lab.com/?p=890' />
+<link rel="alternate" type="application/json+oembed" href="http://www.ria-lab.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.ria-lab.com%2Farchives%2F890" />
+<link rel="alternate" type="text/xml+oembed" href="http://www.ria-lab.com/wp-json/oembed/1.0/embed?url=http%3A%2F%2Fwww.ria-lab.com%2Farchives%2F890&#038;format=xml" />
+<style id="zillah_customizr_pallete" type="text/css">
+				.site-title a, .site-title a:visited {
+					color: #ffffff
+				}
+			
+				.post-navigation .nav-links a,
+				.posts-navigation .nav-previous a,
+				.posts-navigation .nav-previous a, 
+				.posts-navigation .nav-next a {
+					background: rgb(176,96,109);
+					opacity: 1;
+				}
+				.post-navigation .nav-links a:hover,
+				.posts-navigation .nav-previous a:hover,
+				.posts-navigation .nav-previous a:hover, 
+				.posts-navigation .nav-next a:hover {
+					background: rgb(176,96,109);
+					opacity: 0.8;
+				}
+			
+				.widget-title {
+					color: rgb(245,159,76);
+				}
+				a, .entry-content a:visited, .comment-content a:visited,
+				.cat-links, .entry-header .cat-links, .cat-links a,
+				p.dropcap:first-letter,
+				.site-footer .fa,
+				.author-details-title,
+				.author-details-title a:visited,
+				.entry-content #jp-relatedposts .jp-relatedposts-items .jp-relatedposts-post .jp-relatedposts-post-title a {
+					color:rgb(245,159,76);
+				}
+				button, input[type="button"], input[type="reset"], input[type="submit"], .btn {
+					background: rgb(245,159,76);
+				}
+				blockquote {
+					border-left: solid 5px rgb(245,159,76);
+				}
+				a.more-link,
+				a.more-link:visited,
+				.reply a,
+				a.post-edit-link, a.post-edit-link:visited,
+				.tags-links a:visited,
+				.logged-in-as a, .logged-in-as a:visited {
+					color: rgb(245,159,76);
+				}
+				@media screen and (max-width: 991px) {
+					.main-navigation {
+						background: rgb(245,159,76);
+					}
+				}
+			
+				 .main-navigation li:hover > a:hover, 
+				 .main-navigation li.focus > a:hover,
+				 .widget li a:hover,
+				 .main-navigation li:hover > a, 
+				 .main-navigation li.focus > a,
+				 a.post-edit-link:hover,
+				 .tags-links a:hover,
+				 .author-details-title a:hover {
+					color: rgb(255,193,84);
+				 }
+				 a.more-link:hover,
+				 a:hover,
+				.site-title a:hover,
+				.cat-links a:hover,
+				.entry-title-blog a:hover,
+				.carousel-caption-title a:hover,
+				.carousel-caption-category a:hover,
+				.social-navigation a:hover,
+				.widget-area .widget li a:hover,
+				.site-footer a:hover,
+				.menu-toggle:hover, .menu-toggle:focus,
+				.comment-metadata a:hover, .comment-author .fn a:hover,
+				.reply a:hover,
+				.entry-content a:hover,
+				.comment-content a:hover {
+					color:rgb(255,193,84);
+				}
+				@media screen and (max-width: 991px) {
+					 .main-navigation ul ul {
+						background:rgb(255,193,84);
+					 }
+					 .dropdown-toggle,
+					 .dropdown-toggle.toggled-on, 
+					 .dropdown-toggle.toggled-on:hover, 
+					 .dropdown-toggle.toggled-on:focus {
+						color: rgb(255,193,84);
+					 }
+				}
+				button:focus,
+				input[type="button"]:focus,
+				input[type="reset"]:focus,
+				input[type="submit"]:focus,
+				button:active,
+				input[type="button"]:active,
+				input[type="reset"]:active,
+				input[type="submit"]:active {
+					background:rgb(255,193,84);
+				}
+			
+				body {
+					color: rgb(111,110,107); 
+				}
+			
+			.carousel-caption-title, 
+			.carousel-caption-title a {
+				color: #373735;
+			}
+			
+			.widget-area .widget li a {
+				color: #6f6e6b;
+			}
+			@media screen and (max-width: 991px) {
+				.main-navigation ul ul li:hover > a:hover, 
+				.main-navigation ul ul li.focus > a:hover, 
+				.main-navigation ul ul li:hover > a, 
+				.main-navigation ul ul li.focus > a,
+				.main-navigation a:visited {
+					color: #FFF; 
+				}
+			}
+		
+			body {
+				font-size: 16px;
+			}
+		</style><style type="text/css" id="syntaxhighlighteranchor"></style>
+		<style type="text/css" id="wp-custom-css">
+			.site-description {color: white;}
+.site-branding-wrap {background-color: rgba(0,0,0,0.6); padding:8px}
+		</style>
+	</head>
+<body class="post-template-default single single-post postid-890 single-format-standard">
+<div id="page" class="site">
+	<a class="skip-link screen-reader-text" href="#main">コンテンツへスキップ</a>
+		<header id="masthead" class="site-header" role="banner">
+
+		<div class="header-inner-top">
+			<div class="container container-header">
+				<div class="header-inner">
+
+					<div class="main-navigation-wrap">
+
+						<div class="main-navigation-wrap-inner
+						 no-social-menu						">
+
+							
+							<nav id="site-navigation" class="main-navigation" role="navigation">
+								<div class="menu-menu-1-container"><ul id="primary-menu" class="menu"><li id="menu-item-557" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-557"><a href="http://www.ria-lab.com/">ホーム</a></li>
+<li id="menu-item-558" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-558"><a href="http://www.ria-lab.com/about">RIALAB.について</a></li>
+<li id="menu-item-560" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-560"><a href="http://www.ria-lab.com/products">サービス・製品</a></li>
+<li id="menu-item-559" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-559"><a href="http://www.ria-lab.com/contact">お問い合わせ</a></li>
+</ul></div>							</nav><!-- #site-navigation -->
+
+							<div class="menu-toggle-button-wrap">
+								<button class="menu-toggle" aria-controls="primary-menu" aria-expanded="false"><i class="fa fa-bars"></i></button>
+							</div>
+
+							<div class="header-search">
+								
+<form role="search" method="get" class="search-form search-toggle" action="http://www.ria-lab.com/">
+	<label>
+		<span class="screen-reader-text">検索:</span>
+		<input type="search" class="search-field" placeholder="検索 &hellip;" value="" name="s" title="">
+	</label>
+	<input type="submit" class="search-submit" value="検索">
+</form>
+							</div>
+
+						</div>
+					</div>
+				</div><!-- .container-header -->
+			</div>
+		</div>
+
+		<div class="header-inner-site-branding header-logo-wrap-single">
+			<div class="container container-header-logo">
+								<div class="site-branding-wrap">
+					<div class="site-branding">
+						<div class="header-logo-wrap"><div class="header-title-wrap">				<p class="site-title"><a href="http://www.ria-lab.com/" rel="home">RIALAB.</a></p>
+				</div>			<p class="site-description">福島県郡山市でEAP(従業員支援プログラム)業務支援システムや生産管理システムなど、オーダーメイドな業務システム構築をしているエンジニアのサイト</p>
+			</div>					</div><!-- .site-branding -->
+				</div>
+							</div><!-- .container-header-logo -->
+		</div>
+
+	</header><!-- #masthead -->
+	
+	
+		<div id="content" class="site-content">
+		<div class="container">
+			
+	<div class="content-wrap">
+
+		<div id="primary" class="content-area">
+			<main id="main" class="site-main" role="main">
+
+			
+<article id="post-890" class="article entry-content-wrap post-890 post type-post status-publish format-standard hentry category-java category-20 category-16 tag-ble tag-bluetooth tag-gatt tag-iot tag-java tag-sony tag-swr12 tag-66">
+
+	<header class="entry-header">
+		<div class="content-inner-wrap">
+			<span class="posted-on"><a href="http://www.ria-lab.com/archives/890" rel="bookmark"><time class="entry-date published" datetime="2016-11-13T14:04:59+00:00" itemprop="datePublished">2016/11/13</time><time class="updated" datetime="2017-05-29T13:07:48+00:00" itemprop="dateModified">2017/05/29</time><meta itemprop="datePublished" content="2017/05/29"></a></span><h1 class="entry-title">SONY SmartBand 2 SWR12で集めた心拍数データをJava APIで取得する</h1><span class="cat-links"><span class="screen-reader-text">カテゴリー </span><a href="http://www.ria-lab.com/archives/category/java" rel="category tag">Java</a>, <a href="http://www.ria-lab.com/archives/category/%e3%82%b3%e3%83%bc%e3%83%89%e3%82%b9%e3%83%8b%e3%83%9a%e3%83%83%e3%83%88" rel="category tag">コードスニペット</a>, <a href="http://www.ria-lab.com/archives/category/%e6%8a%80%e8%a1%93%e7%9a%84%e3%81%aa%e3%83%a1%e3%83%a2" rel="category tag">技術的なメモ</a></span>		</div>
+	</header><!-- .entry-header -->
+
+	
+		<div class="entry-content">
+		<div class="content-inner-wrap">
+						<p>SONYの<a href="http://www.sonymobile.co.jp/product/smartproducts/swr12/" target="_blank">SmartBand 2 SWR12</a>で収集した心拍数データを、APIを使って自分のプログラムに取り込む方法を実装してみました。</p>
+<p>まず、SONYはウェアラブルデバイスで収集した情報を<a href="http://www.sonymobile.co.jp/myxperia/app/lifelog/" target="_blank">Lifelog</a>というアプリで簡単に見ることができるようになっています。<br />最近のSONYは仕様をオープンにする傾向があり、Lifelogも<a href="https://developer.sony.com/develop/services/lifelog-api/" target="_blank">Lifelog API</a>というAPI経由で蓄積したデータに簡単にアクセスできるようになっています。</p>
+<p>しかし、ここから先、「どうしてここまでやっているのに、これができないんだ!?」というソニー仕様の残念なところが顔を出してきます。</p>
+<p>Lifelog APIから扱える<a href="https://developer.sony.com/develop/services/lifelog-api/endpoints/activities/" target="_blank">データの種類は限定</a>されます。<br />スマホのLifelogアプリで見えているデータのうち、ごくごく一部のデータしかLifelog APIでは扱うことができません。<br />極端に言えば、Lifelog APIから取れるデータは、「寝てるか起きているか程度しか取れない」と言っても差支えがないと思います。</p>
+<p>残りはどこから持ってくれば良いのかというと、<a href="https://developers.google.com/fit/?hl=ja" target="_blank">Google Fit</a>を使えということらしいです。<br />『<a href="http://developer.sonymobile.com/2015/09/10/use-smartband-2-sensor-data-for-innovative-android-and-ios-applications/" target="_blank">Use SmartBand 2 sensor data for innovative Android and iOS applications</a>』あたりを見ると、投げやり感が半端ないです。</p>
+<p>Google Fitを使えばよいことはわかったのですが、SWR12で集めたデータをGoogle Fitから具体的にどのように持ってくれば良いのか、SonyにもGoogleにも十分な資料がないのですよね…。<br />ネット上の情報を検索しても、見つかるサンプルがAndroid専用のものだったり、端折って書かれているクラスのFQCNがわからなかったりと、一筋縄ではいかないようです。</p>
+<h3>実行前に準備するもの</h3>
+<li>SONY SmartBand2 SWR12
+<li>スマホ (今回はAndroid、Xperia Z5 Compactを使用)
+<li>スマホアプリ Lifelog / SmartBand2 (Android)
+<li>スマホアプリ Google Fit (Android)
+<li>Googleのアカウント </li>
+<p>SWR12とスマホをペアリングし、Lifelogアプリからデータが閲覧できる状態まで設定します。</p>
+<p>Lifelogアプリから見られるようになっても、Google Fitにデータは送られていません。<br />Google Fitでもデータが見られるようにするためには、SmartBand 2アプリの設定を行う必要があります。</p>
+<p><a href="http://www.ria-lab.com/wp/wp-content/uploads/2016/11/Screenshot_20161113-132549.png"><img width="244" height="431" title="Screenshot_20161113-132549" style="border-width: 0px; padding-top: 0px; padding-right: 0px; padding-left: 0px; margin-right: auto; margin-left: auto; float: none; display: block; background-image: none;" alt="Screenshot_20161113-132549" src="http://www.ria-lab.com/wp/wp-content/uploads/2016/11/Screenshot_20161113-132549_thumb.png" border="0"></a></p>
+<p></p>
+<p>アプリの設定を開き、「Google Fit」をタップします。</p>
+<p><a href="http://www.ria-lab.com/wp/wp-content/uploads/2016/11/Screenshot_20161113-132556.png"><img width="244" height="431" title="Screenshot_20161113-132556" style="border-width: 0px; padding-top: 0px; padding-right: 0px; padding-left: 0px; margin-right: auto; margin-left: auto; float: none; display: block; background-image: none;" alt="Screenshot_20161113-132556" src="http://www.ria-lab.com/wp/wp-content/uploads/2016/11/Screenshot_20161113-132556_thumb.png" border="0"></a></p>
+<p>設定画面のスイッチをONに設定します。</p>
+<p>これで、Google Fitにもデータが送られるようになります。<br />と言いたいところですが、実際にはバックグラウンドで勝手に送信されることなく、Google Fitのアプリを起動したタイミングでデータが送信されているっぽいです。</p>
+<p><strong><font color="#ff0000">この設定作業が、心拍数データを自前のプログラムで扱うための最大のキーポイントです!!<br /></font></strong></p>
+<h3>Googleの設定</h3>
+<li>OAuth 2.0のクライアントID
+<li>Google Fit APIの有効化 </li>
+<p>Googleのサービスを使うための認証情報が必要になります。<br />認証情報は、Googleの<a href="https://console.developers.google.com/?hl=JA" target="_blank">API Console</a>から作成でき、「OAuth クライアントID」形式で作成します。<br />認証情報の作成に成功したら、クライアントIDとクライアントシークレットをJSON形式でダウンロードします。</p>
+<p>API ConsoleからAPIの有効化を行います。<br />API Console左側から「ライブラリ」を選択するとAPI/サービスの一覧が表示されるので、「Fitness API」を選択(見つからない場合は検索すればOKです)。<br />「▶有効にする」をクリックすれば、APIが有効化されます。</p>
+<h3>プログラムの準備</h3>
+<p>必要なライブラリは、以下の2つです。</p>
+<li>API Client Library for Java (<a href="https://github.com/google/google-api-java-client">https://github.com/google/google-api-java-client</a>)
+<li>Fitness Client Library for Java ( <a href="https://developers.google.com/api-client-library/java/apis/fitness/v1">https://developers.google.com/api-client-library/java/apis/fitness/v1</a> ) </li>
+<p>ライブラリに同梱されている説明に基づきJava SEで実行するために必要なJARファイルのみを抽出して使用しています。</p>
+<p>実行環境は、Java SE 8u111/Windows 10 Pro 1607の組み合わせです。<br />特に変わったこともしていないので、Java SE 8よりも前のバージョン、Windows以外のプラットフォームでも問題なく動くと思います。</p>
+<p>GoogleのAPI Consoleより取得しダウンロードしたJSON形式の認証情報をJavaのクラスパスから参照できる場所に配置し実行をします。<br />ブラウザが起動しGoogleの認証が実行がはじまります。(一度許可を与えると認証情報がファイルに保存され、有効期間内は認証画面の表示なく実行されます)<br />認証画面の「許可」ボタンを押すと、最近24時間分くらいの心拍数データの取得を試み、成功すると標準出力(コンソール)に値が一覧表示されます。</p>
+<p><strong>必要なもの:</strong></p>
+<dl>
+<dd>
+<p style="padding-left: 30px;"><a href="http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html">Java SE Development Kit 8</a> あればEclipseなどのIDE環境</p>
+</dd>
+</dl>
+<dl>
+<dt><strong>ダウンロード:</strong>  </p>
+<dd>
+<p style="padding-left: 30px;"><a href="http://www.ria-lab.com/omiyage/GoogleFitAPITest.zip">GoogleFitAPITest.zip</a></p>
+</dd>
+</dl>
+<dl>
+<dt><strong>ライセンス:</strong>  </p>
+<dd>
+<p style="padding-left: 30px;"><a href="http://www.kmonos.net/nysl/">NYSL</a></p>
+</dd>
+</dl>
+<p></p>
+<pre title="GoogleFitAPITest.java" class="brush: java; collapse: false;">
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.security.GeneralSecurityException;
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.google.api.client.auth.oauth2.Credential;
+import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
+import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
+import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
+import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.json.JsonFactory;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import com.google.api.client.util.DateTime;
+import com.google.api.client.util.store.FileDataStoreFactory;
+import com.google.api.services.fitness.Fitness;
+import com.google.api.services.fitness.Fitness.Users;
+import com.google.api.services.fitness.Fitness.Users.DataSources;
+import com.google.api.services.fitness.Fitness.Users.DataSources.Datasets;
+import com.google.api.services.fitness.FitnessScopes;
+import com.google.api.services.fitness.model.DataPoint;
+import com.google.api.services.fitness.model.DataSource;
+import com.google.api.services.fitness.model.ListDataSourcesResponse;
+import com.google.api.services.fitness.model.Value;
+
+/**
+ * 	Google Fit APIで心拍データを取得するサンプルプログラム&lt;br&gt;
+ * 
+ *	&lt;ul&gt;
+ * 		&lt;li&gt;SONY SmartBand 2 SWR12を用いて心拍データの取得を行うとする場合、
+ * 		SmartBand 2アプリの設定でGoogleFitをONに設定すること。&lt;/li&gt;
+ * 
+ * 		&lt;li&gt;Google API Consoleで認証情報(OAuth 2.0 クライアントID)の取得を行うこと。&lt;br&gt;
+ * 			また、認証情報はJSON形式でダウンロードし、Javaの実行環境から見える適当な位置に配置すること。&lt;/li&gt;
+ * 
+ * 		&lt;li&gt;Google API Manager/API ConsoleでFitness APIを有効化しておくこと。&lt;/li&gt;
+ *	&lt;/ul&gt;
+ * 
+ * 	&lt;dl&gt;
+ * 		&lt;dt&gt;必要なライブラリ:&lt;/dt&gt;
+ * 		&lt;dd&gt;API Client Library for Java	( https://github.com/google/google-api-java-client )&lt;/dd&gt;
+ * 		&lt;dd&gt;Fitness Client Library for Java ( https://developers.google.com/api-client-library/java/apis/fitness/v1 )&lt;/dd&gt;
+ *	&lt;/dl&gt;
+ *
+ *	&lt;br&gt;
+ * 	&lt;dl&gt;
+ * 		&lt;dt&gt;Lisense:&lt;/dt&gt;
+ * 		&lt;dd&gt;This software is distributed under the license of NYSL.&lt;br&gt;
+ * 			( http://www.kmonos.net/nysl/ )&lt;/dd&gt;
+ * 	&lt;/dl&gt;
+ * 
+ * @author makoto
+ *
+ */
+public class GoogleFitAPITest {
+
+	/**
+	 * テストの実行
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		
+		try {
+			
+			GoogleFitAPITest test = new GoogleFitAPITest();
+			Credential credential = test.authorize();
+			test.build(credential);
+			
+			List&lt;DataSource&gt;sourceList = test.getDataSources();
+			List&lt;DataSource&gt;heartRateSourceList = test.filter(sourceList, HEART_RATE_BPM); 
+			
+			for (DataSource source:heartRateSourceList) {
+				
+				OffsetDateTime end = OffsetDateTime.now();
+				OffsetDateTime start = end.minusDays(1);
+				
+				test.showData(source.getDataStreamId(), start, end);
+			}
+			
+		} catch (IOException | GeneralSecurityException e) {
+			e.printStackTrace();
+		}
+
+	}
+    
+	/**
+	 * Google Fitのパブリックデータタイプで定義された心拍数
+	 */
+	private static final String HEART_RATE_BPM = "com.google.heart_rate.bpm";
+	
+	/**
+	 * Google FitのユーザID
+	 */
+	private static final String USER_ID = "me";
+	
+	/**
+	 * スレッドセーフなHTTPトランスポート
+	 */
+	private HttpTransport httpTransport;
+	/**
+	 * JSONを扱うためのファクトリ
+	 */
+	private JsonFactory jsonFactory;
+	
+	/**
+	 * Google Fitサービスのインスタンス 
+	 */
+	private Fitness fitness;
+	
+	/**
+	 *	GoogleのOAuth 2.0認証情報の格納先&lt;br&gt;
+	 *	《メモ》
+	 *		OSユーザのホームディレクトリ直下にディレクトリ「sony_sbr12_auth」が作成される
+	 */
+	private File AUTH_STORE_PATH = new File(System.getProperty("user.home"), "sony_sbr12_auth");
+	
+	
+	
+	/**
+	 * コンストラクタ
+	 * 
+	 * @throws IOException
+	 * @throws GeneralSecurityException
+	 */
+	private GoogleFitAPITest() throws IOException, GeneralSecurityException {
+		
+		httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+		jsonFactory = JacksonFactory.getDefaultInstance();
+	}
+	
+	/**
+	 * OAuth 2.0認証の実行&lt;br&gt;
+	 * 
+	 * @return
+	 * @throws IOException
+	 * @throws GeneralSecurityException
+	 */
+	private Credential authorize() throws IOException, GeneralSecurityException {
+		
+		// Google API Consoleから取得したClient ID/Client Secretを読み込む
+		InputStream in = GoogleFitAPITest.class.getResourceAsStream("/client_id.json");
+		GoogleClientSecrets secrets = GoogleClientSecrets.load(jsonFactory, new InputStreamReader(in));
+		
+		// GoogleのOAuth 2.0認証用のFlowを生成
+		// 認証する権限は、Google Fitのすべての項目
+		// 認証した結果はファイルに保存
+		GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(httpTransport, jsonFactory, secrets,
+				FitnessScopes.all())
+				.setDataStoreFactory(new FileDataStoreFactory(AUTH_STORE_PATH))
+				.build();
+		
+		// 認証を行っていない、または無効な場合、ブラウザが立ち上がり認証を求められる
+		//	《メモ》
+		//	非GUI環境では実行できないようだ
+		Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+		
+		return credential; 
+	}
+	
+	/**
+	 * Google Fitサービスのインスタンス生成
+	 * 
+	 * @param credential	OAuth 2.0認証情報
+	 * @throws IOException
+	 */
+	private void build(Credential credential) throws IOException {
+		
+		// 《メモ》
+		// 最低限のパラメータでもアクセスが可能
+		// 読み込みしか行っていないためか、Application Nameも不要だった
+		fitness = new Fitness.Builder(httpTransport, jsonFactory, credential)
+				.build();
+	}
+
+	/**
+	 * Google Fitに登録されているデータソースの取得
+	 * 
+	 * @return	
+	 * @throws IOException
+	 */
+	private List&lt;DataSource&gt; getDataSources() throws IOException {
+		
+		DataSources sources = fitness.users().dataSources();
+		Users.DataSources.List l = sources.list(USER_ID);
+		ListDataSourcesResponse list = l.execute();
+		
+		return list.getDataSource();
+		
+	}
+	
+	/**
+	 * データソースのコレクションから指定したデータタイプに一致するリストの抽出
+	 * 
+	 * @param sourceList	Google Fitから取得したデータソース
+	 * @param dataType	データタイプ名(例: com.google.heart_rate.bpm)
+	 * @return
+	 */
+	private List&lt;DataSource&gt;filter(List&lt;DataSource&gt;sourceList, String dataType) {
+		
+		List&lt;DataSource&gt;l = new ArrayList&lt;&gt;();
+		
+		for (DataSource source:sourceList) {
+			if (source.getDataType().getName().equals(dataType)) {
+				l.add(source);
+			}
+		}
+		
+		return l;
+	}
+	
+	/**
+	 * 	指定データソース・指定期間のデータを取得し、標準出力に表示する
+	 * 
+	 * @param dataSourceId	データソースID
+	 * @param start	開始日時
+	 * @param end	終了日時
+	 * @throws IOException
+	 */
+	private void showData(String dataSourceId, OffsetDateTime start, OffsetDateTime end) throws IOException {
+		
+		// 開始日時・終了日時をナノ秒表記に変換
+		String startText = String.valueOf(toNanos(start));
+		String endText = String.valueOf(toNanos(end));
+		// 開始日時・終了日時を組み合わせたものをデータセットIDとする
+		String datasetId = startText + "-" + endText;
+
+		System.out.println("&lt;BOD:\t data-source-id[" + dataSourceId + "], dataset-id[" + datasetId + "]&gt;");
+		
+		// Google Fitに問い合わせ
+		Datasets.Get cmd = fitness.users().dataSources().datasets().get(USER_ID, dataSourceId, datasetId);
+		com.google.api.services.fitness.model.Dataset dataset = cmd.execute();
+		
+		// 取得したデータを一覧表示
+		for (DataPoint dp:dataset.getPoint()) {
+			// ナノ秒をミリ秒に変換
+			DateTime dt = new DateTime(toMilliseconds(dp.getStartTimeNanos()));
+			// 有効なデータが存在しな場合は、ダミーデータを生成
+			Value v = (dp.getValue().size() == 0) ? new Value() : dp.getValue().get(0);
+			
+			System.out.println(dt + "=&gt;" + v.getFpVal());
+		}
+		
+		System.out.println("&lt;EOD:\t data-source-id[" + dataSourceId + "], dataset-id[" + datasetId + "]&gt;");
+	}
+	
+	/**
+	 * 	OffsetDateTimeをナノ秒表現に変換
+	 * 
+	 * @param time
+	 * @return
+	 */
+	private static long toNanos(OffsetDateTime time) {
+		return (time.toEpochSecond() * 1000000000L) + time.getNano();
+	}
+	
+	/**
+	 * 	ナノ秒をミリ秒に変換
+	 * 
+	 * @param nanos
+	 * @return
+	 */
+	private static long toMilliseconds(long nanos) {
+		return nanos / 1000000L;
+	}
+}
+
+</pre>
+<p></p>
+<h3>プログラムの実行結果</h3>
+<p><a href="http://www.ria-lab.com/wp/wp-content/uploads/2016/11/image.png"><img width="476" height="722" title="image" style="border-width: 0px; padding-top: 0px; padding-right: 0px; padding-left: 0px; margin-right: auto; margin-left: auto; float: none; display: block; background-image: none;" alt="image" src="http://www.ria-lab.com/wp/wp-content/uploads/2016/11/image_thumb.png" border="0"></a></p>
+<p></p>
+<p>今回、心拍数データが取れるところまではできましたが、Lifelogアプリにはストレス状態などの情報も表示されています。<br />アプリからみると過去分に遡及して見ることが可能なので、どこかにこれらのデータが格納されていることは間違いないと思います。<br />次は、これらのデータをどうにかして取られないか試してみようと思います。</p>
+<p><strong>2017/05/25追記</strong></p>
+<p>client_id.jsonの配置場所について問い合わせをいただきました。<br />client_id.jsonは、下図のようにソースフォルダの直下に配置しています。</p>
+<p><a href="http://www.ria-lab.com/wp/wp-content/uploads/2017/05/hr_eclipse.png"><img width="504" height="494" title="hr_eclipse" style="margin-right: auto; margin-left: auto; float: none; display: block; background-image: none;" alt="hr_eclipse" src="http://www.ria-lab.com/wp/wp-content/uploads/2017/05/hr_eclipse_thumb.png" border="0"></a></p>
+					</div>
+	</div><!-- .entry-content -->
+	
+	<footer class="entry-footer">
+		<div class="content-inner-wrap">
+					</div>
+	</footer><!-- .entry-footer -->
+
+</article><!-- #post-## -->
+
+<div class="author-details-wrap"><div class="content-inner-wrap"><div class="author-details-img-wrap"><img alt='' src='http://1.gravatar.com/avatar/48c29c1600d7a6746e60f7fae77d4720?s=100&#038;d=mm&#038;r=g' srcset='http://1.gravatar.com/avatar/48c29c1600d7a6746e60f7fae77d4720?s=200&#038;d=mm&#038;r=g 2x' class='avatar avatar-100 photo' height='100' width='100' /></div><div class="author-details-title" itemprop="author"></div><div class="author-details-content">デジタルガジェット大好き!!<br />
+小さい機械を片手に、JavaとFlex、PHPなど、いろいろなプログラミング言語・環境を行ったり来たりしながらプログラムを書いています。<br />
+最近お気に入りな環境は、Visual StudioとFileMaker。</div></div></div>
+	<nav class="navigation post-navigation" role="navigation">
+		<h2 class="screen-reader-text">投稿ナビゲーション</h2>
+		<div class="nav-links"><div class="nav-previous"><a href="http://www.ria-lab.com/archives/877" rel="prev"><span class="post-title">Excelのアクティブプリンタをプログラムで設定する方法</span></a></div><div class="nav-next"><a href="http://www.ria-lab.com/archives/909" rel="next"><span class="post-title">ヤマト運輸 送り状発行ソフトB2 (Ver. 6)をWindows 10にインストールする方法</span></a></div></div>
+	</nav>
+			</main><!-- #main -->
+		</div><!-- #primary -->
+
+	</div><!-- .content-wrap -->
+
+
+					</div><!-- .container -->
+	</div><!-- #content -->
+	
+		<footer id="colophon" class="site-footer" role="contentinfo">
+		
+		
+		<div class="site-info">
+			<div class="container container-footer-info"">
+
+				<div class="footer-copyright">
+					Proudly powered by <a href="http://wordpress.org/" rel="nofollow">WordPress</a>					<span class="sep"> | </span>
+					Theme Zillah by <a href="http://themeisle.com/" rel="nofollow">Themeisle (テーマアイル)</a>				</div>
+				<div class="footer-back-top"">
+					<a href="#" id="to-top" class="to-top">トップへ戻る <i class="fa fa-angle-double-up" aria-hidden="true"></i></a>
+				</div>
+			</div>
+		</div><!-- .site-info -->
+
+			</footer><!-- #colophon -->
+	</div><!-- #page -->
+
+<!-- analytics-counter google analytics tracking code --><script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+    ga('create', 'UA-81865055-1', 'auto');
+
+    ga('set', 'anonymizeIp', true);    ga('send', 'pageview');
+
+</script><!--  --><script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shCore.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushAS3.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushBash.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushColdFusion.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/third-party-brushes/shBrushClojure.js?ver=20090602'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCpp.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCSharp.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushCss.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushDelphi.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushDiff.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushErlang.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/third-party-brushes/shBrushFSharp.js?ver=20091003'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushGroovy.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJava.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJavaFX.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushJScript.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/third-party-brushes/shBrushLatex.js?ver=20090613'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/third-party-brushes/shBrushMatlabKey.js?ver=20091209'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/third-party-brushes/shBrushObjC.js?ver=20091207'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPerl.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPhp.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPlain.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPowerShell.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushPython.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/third-party-brushes/shBrushR.js?ver=20100919'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushRuby.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushScala.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushSql.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushVb.js?ver=3.0.9b'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/scripts/shBrushXml.js?ver=3.0.9b'></script>
+<script type='text/javascript'>
+	(function(){
+		var corecss = document.createElement('link');
+		var themecss = document.createElement('link');
+		var corecssurl = "http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shCore.css?ver=3.0.9b";
+		if ( corecss.setAttribute ) {
+				corecss.setAttribute( "rel", "stylesheet" );
+				corecss.setAttribute( "type", "text/css" );
+				corecss.setAttribute( "href", corecssurl );
+		} else {
+				corecss.rel = "stylesheet";
+				corecss.href = corecssurl;
+		}
+		document.getElementsByTagName("head")[0].insertBefore( corecss, document.getElementById("syntaxhighlighteranchor") );
+		var themecssurl = "http://www.ria-lab.com/wp/wp-content/plugins/syntaxhighlighter/syntaxhighlighter3/styles/shThemeMidnight.css?ver=3.0.9b";
+		if ( themecss.setAttribute ) {
+				themecss.setAttribute( "rel", "stylesheet" );
+				themecss.setAttribute( "type", "text/css" );
+				themecss.setAttribute( "href", themecssurl );
+		} else {
+				themecss.rel = "stylesheet";
+				themecss.href = themecssurl;
+		}
+		//document.getElementById("syntaxhighlighteranchor").appendChild(themecss);
+		document.getElementsByTagName("head")[0].insertBefore( themecss, document.getElementById("syntaxhighlighteranchor") );
+	})();
+	SyntaxHighlighter.config.strings.expandSource = 'ソースを表示';
+	SyntaxHighlighter.config.strings.help = 'SyntaxHighlighterについて';
+	SyntaxHighlighter.config.strings.alert = 'SyntaxHighlighter\n\n';
+	SyntaxHighlighter.config.strings.noBrush = '指定のブラシが見つかりませんでした: ';
+	SyntaxHighlighter.config.strings.brushNotHtmlScript = 'HTMLスクリプトのオプションのためにブラシが構成されませんでした: ';
+	SyntaxHighlighter.defaults['pad-line-numbers'] = false;
+	SyntaxHighlighter.all();
+</script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var wpcf7 = {"apiSettings":{"root":"http:\/\/www.ria-lab.com\/wp-json\/contact-form-7\/v1","namespace":"contact-form-7\/v1"},"recaptcha":{"messages":{"empty":"\u3042\u306a\u305f\u304c\u30ed\u30dc\u30c3\u30c8\u3067\u306f\u306a\u3044\u3053\u3068\u3092\u8a3c\u660e\u3057\u3066\u304f\u3060\u3055\u3044\u3002"}}};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/plugins/contact-form-7/includes/js/scripts.js?ver=5.0.3'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/themes/zillah/js/bootstrap.min.js?ver=20130116'></script>
+<script type='text/javascript'>
+/* <![CDATA[ */
+var screenReaderText = {"expand":"<span class=\"screen-reader-text\">\u30b5\u30d6\u30e1\u30cb\u30e5\u30fc\u3092\u5c55\u958b<\/span>","collapse":"<span class=\"screen-reader-text\">\u30b5\u30d6\u30e1\u30cb\u30e5\u30fc\u3092\u9589\u3058\u308b<\/span>"};
+/* ]]> */
+</script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/themes/zillah/js/functions.js?ver=20151217'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-content/themes/zillah/js/skip-link-focus-fix.js?ver=20151215'></script>
+<script type='text/javascript' src='http://www.ria-lab.com/wp/wp-includes/js/wp-embed.min.js?ver=4.9.8'></script>
+
+</body>
+</html>
